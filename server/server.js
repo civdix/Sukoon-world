@@ -41,10 +41,16 @@ const startServer = async () => {
   }
 };
 
-// If not running on Vercel, start the server normally
-if (!process.env.VERCEL) {
+// If running on Vercel, sync the database asynchronously on startup to ensure new columns are created
+if (process.env.VERCEL) {
+  sequelize.sync({ alter: true })
+    .then(() => console.log("Database synced successfully on Vercel"))
+    .catch((error) => console.error("Database sync failed on Vercel:", error));
+} else {
+  // Start the server normally for local development
   startServer();
 }
+
 
 // Export the Express app so Vercel can handle the routing and serverless invocation
 export default app;
