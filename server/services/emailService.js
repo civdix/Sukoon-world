@@ -216,7 +216,6 @@ export const sendBookingConfirmationEmail = async (bookingDetails) => {
   </div>
 </div>
     `;
-
     // 1. Send Email to Booker
     const bookerOptions = {
       from: `"SukoonWorld" <${verificationUser}>`,
@@ -228,7 +227,7 @@ export const sendBookingConfirmationEmail = async (bookingDetails) => {
     // 2. Send Email to Host/Admin
     const hostOptions = {
       from: `"SukoonWorld" <${verificationUser}>`,
-      to: hostEmail || process.env.VITE_HOST_EMAIL,
+      to: hostEmail || process.env.SUPPORT_EMAIL || process.env.EMAIL_USER,
       subject: `New Booking: ${name}`,
       html: hostHtml,
     };
@@ -246,7 +245,7 @@ export const sendBookingConfirmationEmail = async (bookingDetails) => {
 
 export const sendContactEmail = async ({ name, email, subject, message }) => {
   try {
-    const supportEmail = process.env.SUPPORT_EMAIL || "sukoonworld.org@gmail.com";
+    const supportEmail = process.env.SUPPORT_EMAIL || "kumarrohit0758@gmail.com";
 
     const userAckHtml = `
       <p>Hi ${name},</p>

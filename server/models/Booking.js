@@ -59,6 +59,22 @@ const Booking = sequelize.define('Booking', {
   notes: {
     type: DataTypes.TEXT,
     allowNull: true,
+  },
+  counsellorId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  counsellorName: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  counsellorEmail: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  meetLink: {
+    type: DataTypes.STRING,
+    allowNull: true,
   }
 }, {
   timestamps: true,

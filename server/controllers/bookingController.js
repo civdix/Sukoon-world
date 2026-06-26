@@ -24,8 +24,20 @@ const SESSION_PRICES_IN_PAISE = {
 // @route   POST /api/bookings
 export const createBooking = async (req, res) => {
   try {
-    const { name, email, phone, sessionType, date, time, amount, notes } =
-      req.body || {};
+    const {
+      name,
+      email,
+      phone,
+      sessionType,
+      date,
+      time,
+      amount,
+      notes,
+      counsellorId,
+      counsellorName,
+      counsellorEmail,
+      meetLink,
+    } = req.body || {};
     const userId = req.user ? req.user.id : null;
 
     if (
@@ -99,6 +111,10 @@ export const createBooking = async (req, res) => {
       time,
       amount: expectedAmount,
       notes,
+      counsellorId,
+      counsellorName,
+      counsellorEmail,
+      meetLink,
       razorpayOrderId: orderId,
       status: expectedAmount > 0 ? "pending" : "confirmed",
     });
@@ -116,6 +132,9 @@ export const createBooking = async (req, res) => {
             amount: booking.amount,
             phone: booking.phone,
             notes: booking.notes,
+            meetLink: booking.meetLink,
+            hostName: booking.counsellorName,
+            hostEmail: booking.counsellorEmail,
           }).catch((err) => console.error("Email error on free booking:", err));
         },
       );
@@ -202,6 +221,11 @@ export const verifyPayment = async (req, res) => {
         date: booking.date,
         time: booking.time,
         amount: booking.amount,
+        phone: booking.phone,
+        notes: booking.notes,
+        meetLink: booking.meetLink,
+        hostName: booking.counsellorName,
+        hostEmail: booking.counsellorEmail,
       });
 
       res

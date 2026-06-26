@@ -281,66 +281,8 @@ const BookAppointment = () => {
     try {
       createBooking(bookingData);
 
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-      const hostEmail =
-        counsellorDetails?.email ||
-        counsellorDetails?.contactEmail ||
-        import.meta.env.VITE_HOST_EMAIL ||
-        "";
-
-      if (serviceId && publicKey) {
-        const sendPromises = [
-          emailjs.send(
-            serviceId,
-            TEMPLATE_BOOKER_ID,
-            {
-              booker_person: formData.fullName,
-              booker_name: formData.fullName,
-              booked_date: formattedDate,
-              time: fullDateTime,
-              host_name: counsellorDetails.name,
-              meet_link: meetLink,
-              booker_email: formData.email,
-            },
-            { publicKey },
-          ),
-        ];
-
-        if (hostEmail) {
-          sendPromises.push(
-            emailjs.send(
-              serviceId,
-              TEMPLATE_HOST_ID,
-              {
-                booker_person: formData.fullName,
-                booker_name: formData.fullName,
-                email: formData.email,
-                phone: formData.phone,
-                booked_date: formattedDate,
-                booked_time: formData.selectedTime,
-                time: fullDateTime,
-                meet_link: meetLink,
-                notes: formData.issue,
-                host_email: hostEmail,
-              },
-              { publicKey },
-            ),
-          );
-        }
-
-        try {
-          await Promise.all(sendPromises);
-        } catch (emailError) {
-          console.error("EmailJS send failed:", emailError);
-          toast({
-            title: "Booking Confirmed, Email Pending",
-            description:
-              "Your session is booked, but we could not send all confirmation emails right now.",
-            variant: "destructive",
-          });
-        }
-      }
+      // Email notifications are now fully handled by the backend server using nodemailer.
+      // Client-side emailjs calls have been bypassed/removed.
 
       setConfirmationData({
         name: formData.fullName,
@@ -461,8 +403,12 @@ const BookAppointment = () => {
           time: formData.selectedTime || "",
           amount: amountInPaise,
           notes: formData.issue,
+          counsellorId: formData.selectedCounsellor,
+          counsellorName: counsellorDetails.name,
+          counsellorEmail: counsellorDetails.email || counsellorDetails.contactEmail || "",
+          meetLink: meetLink,
         },
-        { headers },
+        { headers }
       );
 
       const { orderId, amount, bookingId } = res.data;
