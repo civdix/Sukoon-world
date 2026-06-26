@@ -19,21 +19,21 @@ const smtpSecure = process.env.SMTP_SECURE !== "false" && (smtpPort === 465 || p
 const transporter = nodemailer.createTransport(
   smtpHost
     ? {
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpSecure,
-        auth: {
-          user: verificationUser,
-          pass: verificationPass,
-        },
-      }
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: verificationUser,
+        pass: verificationPass,
+      },
+    }
     : {
-        service: emailService,
-        auth: {
-          user: verificationUser,
-          pass: verificationPass,
-        },
-      }
+      service: emailService,
+      auth: {
+        user: verificationUser,
+        pass: verificationPass,
+      },
+    }
 );
 
 
@@ -228,8 +228,7 @@ export const sendBookingConfirmationEmail = async (bookingDetails) => {
     // 2. Send Email to Host/Admin
     const hostOptions = {
       from: `"SukoonWorld" <${verificationUser}>`,
-      to: hostEmail || process.env.VITE_HOST_EMAIL || "sukoonworld.org@gmail.com",
-      cc: "sukoonworld.org@gmail.com",
+      to: hostEmail || process.env.VITE_HOST_EMAIL,
       subject: `New Booking: ${name}`,
       html: hostHtml,
     };
@@ -276,7 +275,6 @@ export const sendContactEmail = async ({ name, email, subject, message }) => {
     const hostOptions = {
       from: `"SukoonWorld" <${verificationUser}>`,
       to: supportEmail,
-      cc: "sukoonworld.org@gmail.com",
       subject: `Website Contact: ${subject} - ${name}`,
       html: hostHtml,
     };
