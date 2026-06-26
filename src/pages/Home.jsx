@@ -61,7 +61,7 @@ const Home = () => {
 
   const testimonials = [
     {
-      name: "Anshul Singh Chauhan",
+      name: "Anshu Singh Chauhan",
       text: "Booking a session on SukoonWorld was the best decision I've made. The discovery call made me so comfortable, and their anxiety management sessions have brought real sukoon to my daily life.",
       rating: 5,
       image: "/images/review1.webp",

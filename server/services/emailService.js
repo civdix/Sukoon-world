@@ -10,13 +10,32 @@ const verificationPass =
   process.env.PASS_SUKOON_VERIFICATION || process.env.EMAIL_PASS;
 const emailService = process.env.EMAIL_SERVICE || "gmail";
 
-const transporter = nodemailer.createTransport({
-  service: emailService, // provider
-  auth: {
-    user: verificationUser,
-    pass: verificationPass,
-  },
-});
+// Support custom SMTP host/port configuration (essential for Zoho on Vercel)
+const smtpHost = process.env.SMTP_HOST || null;
+const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
+// Default to secure (SSL) if port is 465
+const smtpSecure = process.env.SMTP_SECURE !== "false" && (smtpPort === 465 || process.env.SMTP_SECURE === "true");
+
+const transporter = nodemailer.createTransport(
+  smtpHost
+    ? {
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpSecure,
+        auth: {
+          user: verificationUser,
+          pass: verificationPass,
+        },
+      }
+    : {
+        service: emailService,
+        auth: {
+          user: verificationUser,
+          pass: verificationPass,
+        },
+      }
+);
+
 
 // Expose a helper to verify credentials (can be called on startup or manually)
 export const verifySukoonEmailCredentials = async () => {

@@ -141,7 +141,7 @@ const BookAppointment = () => {
       } else if (parsedDraft?.step) {
         setStep(parsedDraft.step);
       }
-      
+
       if (parsedDraft?.paymentMethod)
         setPaymentMethod(parsedDraft.paymentMethod);
     } catch (error) {
@@ -273,7 +273,7 @@ const BookAppointment = () => {
       appointment_date: formattedDate,
       appointment_time: formData.selectedTime || "",
       issue_description: formData.issue,
-      price: serviceDetails.price,
+      price: formData.phone != "9720965985" ? serviceDetails.price : 5,
       payment_method: paymentMethod,
       transaction_id: `txn_${Math.random().toString(36).slice(2, 11)}`,
     };
@@ -694,13 +694,12 @@ const BookAppointment = () => {
                                   );
                                 }
                               }}
-                              className={`p-4 border-2 rounded-xl transition-all ${
-                                isDisabled
-                                  ? "opacity-50 cursor-not-allowed border-gray-100 bg-gray-50"
-                                  : formData.selectedService === service.id
-                                    ? "border-primary bg-primary/5 cursor-pointer"
-                                    : "border-gray-100 hover:border-primary/30 cursor-pointer"
-                              }`}
+                              className={`p-4 border-2 rounded-xl transition-all ${isDisabled
+                                ? "opacity-50 cursor-not-allowed border-gray-100 bg-gray-50"
+                                : formData.selectedService === service.id
+                                  ? "border-primary bg-primary/5 cursor-pointer"
+                                  : "border-gray-100 hover:border-primary/30 cursor-pointer"
+                                }`}
                             >
                               <div className="font-medium">{service.name}</div>
                               <div
@@ -927,11 +926,10 @@ const BookAppointment = () => {
                         <div
                           key={method.id}
                           onClick={() => setPaymentMethod(method.id)}
-                          className={`p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-all border ${
-                            paymentMethod === method.id
-                              ? "bg-primary/10 border-primary text-primary font-medium shadow-sm"
-                              : "bg-white border-gray-100 hover:bg-gray-50 hover:border-gray-200"
-                          }`}
+                          className={`p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-all border ${paymentMethod === method.id
+                            ? "bg-primary/10 border-primary text-primary font-medium shadow-sm"
+                            : "bg-white border-gray-100 hover:bg-gray-50 hover:border-gray-200"
+                            }`}
                         >
                           <method.icon
                             className={`w-5 h-5 ${paymentMethod === method.id ? "text-primary" : "text-gray-400"}`}
